@@ -35,15 +35,15 @@ function RenderDish({ dish }) {
 
 
 
-function RenderComments(props) {
+function RenderComments({comments, dishId, addComment}) {
   const [isModalOpen, setModalOpen]  = useState(false)
 
 function handleComment(values) {
   setModalOpen(!isModalOpen);
-   alert("Current State is: " + JSON.stringify(values));
+  addComment(dishId, values.rating, values.author, values.comment)
 }
 
-  const comments = props.comments.map((comment) => {
+  const resultComments = comments.map((comment) => {
     return (
       <div style={{ margin: "20px 0px" }} key={comment.id}>
         <div> {comment.comment}</div>
@@ -61,7 +61,7 @@ function handleComment(values) {
   return (
     <div className="col-12 col-md-5">
       <div className="h1">Comments</div>
-      {comments}
+      {resultComments}
 
       <div>
         <Button outline onClick={() => setModalOpen(!isModalOpen)}>
@@ -72,7 +72,7 @@ function handleComment(values) {
           <ModalBody>
             <LocalForm onSubmit={(values) => handleComment(values)}>
               <Row className="form-group">
-                <Label className='mb-1' htmlFor="rate">
+                <Label className="mb-1" htmlFor="rate">
                   Rating
                 </Label>
                 <Control.select
@@ -89,13 +89,13 @@ function handleComment(values) {
                 </Control.select>
               </Row>
               <Row className="form-group my-2">
-                <Label htmlFor="name" md={12}>
+                <Label htmlFor="author" md={12}>
                   Your Name
                 </Label>
                 <Control.text
-                  model=".name"
+                  model=".author"
                   className="form-control"
-                  id="name"
+                  id="author"
                   placeholder="Your Name"
                   validators={{
                     required,
@@ -105,7 +105,7 @@ function handleComment(values) {
                 />
                 <Errors
                   className="text-danger"
-                  model=".name"
+                  model=".author"
                   show="touched"
                   messages={{
                     required: "Required",
@@ -119,9 +119,9 @@ function handleComment(values) {
                   Comment
                 </Label>
                 <Control.textarea
-                  model=".message"
-                  id="message"
-                  name="message"
+                  model=".comment"
+                  id="comment"
+                  name="comment"
                   rows="6"
                   className="form-control"
                 />
@@ -159,7 +159,9 @@ function DishDetail(props) {
             </div>
           </div>
           <RenderDish dish={props.dish} />
-          <RenderComments comments={props.comments} />
+          <RenderComments comments={props.comments}
+          addComment={props.addComment}
+          dishId={props.dish.id} />
         </div>
       </div>
     );
