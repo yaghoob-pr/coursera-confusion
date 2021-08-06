@@ -13,11 +13,12 @@ import {
   ModalHeader,
   Col,
   Row,
-  Label
+  Label,
 } from "reactstrap";
 import { Link } from "react-router-dom";
 import { useState } from "react";
-import {Control, LocalForm, Errors} from 'react-redux-form'
+import { Control, LocalForm, Errors } from "react-redux-form";
+import { Loading } from "./LoadingComponent";
 
 const required = (val) => val && val.length;
 const maxLength = (len) => (val) => !val || val.length <= len;
@@ -33,15 +34,13 @@ function RenderDish({ dish }) {
   );
 }
 
+function RenderComments({ comments, dishId, addComment }) {
+  const [isModalOpen, setModalOpen] = useState(false);
 
-
-function RenderComments({comments, dishId, addComment}) {
-  const [isModalOpen, setModalOpen]  = useState(false)
-
-function handleComment(values) {
-  setModalOpen(!isModalOpen);
-  addComment(dishId, values.rating, values.author, values.comment)
-}
+  function handleComment(values) {
+    setModalOpen(!isModalOpen);
+    addComment(dishId, values.rating, values.author, values.comment);
+  }
 
   const resultComments = comments.map((comment) => {
     return (
@@ -142,7 +141,24 @@ function handleComment(values) {
 
 function DishDetail(props) {
   let dish = props.dish;
-  if (dish != null) {
+
+  if (props.isLoading) {
+    return (
+      <div className="container">
+        <div className="row">
+          <Loading />
+        </div>
+      </div>
+    );
+  } else if (props.errMess) {
+    return (
+      <div className="container">
+        <div className="row">
+          <h4>{props.errMess}</h4>
+        </div>
+      </div>
+    );
+  } else if (dish != null) {
     return (
       <div>
         <div className="row">
@@ -159,9 +175,11 @@ function DishDetail(props) {
             </div>
           </div>
           <RenderDish dish={props.dish} />
-          <RenderComments comments={props.comments}
-          addComment={props.addComment}
-          dishId={props.dish.id} />
+          <RenderComments
+            comments={props.comments}
+            addComment={props.addComment}
+            dishId={props.dish.id}
+          />
         </div>
       </div>
     );
