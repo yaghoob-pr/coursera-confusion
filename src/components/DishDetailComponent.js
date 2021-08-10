@@ -33,12 +33,12 @@ function RenderDish({ dish }) {
   );
 }
 
-function RenderComments({ comments, dishId, addComment }) {
+function RenderComments({ comments, dishId, postComment }) {
   const [isModalOpen, setModalOpen] = useState(false);
 
   function handleComment(values) {
     setModalOpen(!isModalOpen);
-    addComment(dishId, values.rating, values.author, values.comment);
+    postComment(dishId, values.rating, values.author, values.comment);
   }
 
   const resultComments = comments.map((comment) => {
@@ -176,7 +176,7 @@ function DishDetail(props) {
           <RenderDish dish={props.dish} />
           <RenderComments
             comments={props.comments}
-            addComment={props.addComment}
+            postComment={props.postComment}
             dishId={props.dish.id}
           />
         </div>
