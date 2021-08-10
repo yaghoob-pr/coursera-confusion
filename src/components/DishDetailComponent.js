@@ -1,9 +1,7 @@
 import React from "react";
 import {
-  Card,
   CardImg,
   CardText,
-  CardBody,
   CardTitle,
   BreadcrumbItem,
   Breadcrumb,
@@ -11,7 +9,6 @@ import {
   Modal,
   ModalBody,
   ModalHeader,
-  Col,
   Row,
   Label,
 } from "reactstrap";
