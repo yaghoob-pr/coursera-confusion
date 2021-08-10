@@ -41,7 +41,7 @@ address {
 .page-enter-active{
   opacity: 1;
   transform: translateX(0%);
-  trasition: all 300ms ease-in
+  transition: all 300ms ease-in;
 }
 
 .page-exit {
@@ -51,6 +51,6 @@ address {
 
 .page-exit-active{
   opacity: 0.01;
-  trsansfrom: translateX(100%);
-  transition: all 300ms ease-out.
+  transform: translateX(100%);
+  transition: all 300ms ease-out;
 }

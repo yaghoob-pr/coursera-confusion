@@ -17,6 +17,7 @@ import { useState } from "react";
 import { Control, LocalForm, Errors } from "react-redux-form";
 import { Loading } from "./LoadingComponent";
 import { baseUrl } from "../shared/baseUrl";
+import {FadeTransform, Fade, Stagger} from 'react-animation-components'
 
 
 const required = (val) => val && val.length;
@@ -25,11 +26,16 @@ const minLength = (len) => (val) => !val || val.length >= len;
 
 function RenderDish({ dish }) {
   return (
+          <FadeTransform in
+        transformProps={{
+          exitTransform: 'scale(0.5) translateY(-50%)'
+        }}>
     <div className="col-12 col-md-5">
       <CardImg width="100%" src={baseUrl + dish.image} />
       <CardTitle color="primary">{dish.name}</CardTitle>
       <CardText>{dish.description}</CardText>
     </div>
+    </FadeTransform>
   );
 }
 
@@ -44,23 +50,26 @@ function RenderComments({ comments, dishId, postComment }) {
   const resultComments = comments.map((comment) => {
     return (
       <div style={{ margin: "20px 0px" }} key={comment.id}>
-        <div> {comment.comment}</div>
-        <span style={{ marginRight: "10px" }}>{"~ " + comment.author}</span>
-        <span>
-          {new Intl.DateTimeFormat("en-US", {
-            year: "numeric",
-            month: "short",
-            day: "2-digit",
-          }).format(new Date(Date.parse(comment.date)))}
-        </span>
+        <Fade in>
+          <div> {comment.comment}</div>
+          <span style={{ marginRight: "10px" }}>{"~ " + comment.author}</span>
+          <span>
+            {new Intl.DateTimeFormat("en-US", {
+              year: "numeric",
+              month: "short",
+              day: "2-digit",
+            }).format(new Date(Date.parse(comment.date)))}
+          </span>
+        </Fade>
       </div>
     );
   });
   return (
     <div className="col-12 col-md-5">
       <div className="h1">Comments</div>
+      <Stagger in>
       {resultComments}
-
+</Stagger>
       <div>
         <Button outline onClick={() => setModalOpen(!isModalOpen)}>
           <span className="fa fa-edit fa-lg"> </span> Submit Comment
